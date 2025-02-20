@@ -94,6 +94,7 @@ fn evaluate(rpn: Vec<Token>) -> Result<f64, String>{
                         Op::Div => l / r,
                         Op::Pow => l.powf(r),
                     };
+                    output.push(result);
                 }
 
                 _ => return Err("Invalid Token in RPN".to_string())
