@@ -42,45 +42,10 @@ fn tokenize(expr: &str) -> Result<Vec<Token>, String> {
         .collect()
 }
 
-fn shunting_yard(tokens: Vec<Token>) -> Vec<Token> {
-    let (mut output, stack) = tokens
-        .into_iter()
-        .fold((Vec::new(), Vec::new()), |(mut output, mut stack), token| {
-            match token {
-                Token::Value(_) => {output.push(token);}
-                Token::Operator(op) => {
-                    // Desempilha operadores de maior ou igual precedência
-                    while let Some(Token::Operator(stack_op)) = stack.last() {
-                        if precedence(stack_op) >= precedence(&op) {
-                            output.push(stack.pop().unwrap());
-                        } else { break; }
-                    }
-                    stack.push(Token::Operator(op)); // Empilha o operador atual
-                }
-
-                Token::OpenParen => {stack.push(token);},
-                Token::CloseParen => {
-                    while let Some(token) = stack.pop() {
-                        if let Token::OpenParen = token { break; }
-                        output.push(token);
-                    }
-                }
-            }
-            (output, stack)
-        });
-
-    output.extend(stack.into_iter().rev());
-
-    output
-}
 fn main() {
     let expr = "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3";
     let tokens = tokenize(expr);
     if let Ok(tokens) = &tokens {
         println!("{:?}", tokens);
     }
-
-    let rpn = shunting_yard(tokens.unwrap());
-    println!("{:?}", rpn);
-
 }
