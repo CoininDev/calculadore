@@ -1,3 +1,5 @@
+use std::result;
+
 #[derive(Debug)]
 enum Op{
     Add,
@@ -74,14 +76,51 @@ fn shunting_yard(tokens: Vec<Token>) -> Vec<Token> {
     output
 }
 
+fn evaluate(rpn: Vec<Token>) -> Result<f64, String>{
+    let mut result = rpn
+        .into_iter()
+        .fold(Ok(Vec::new()), |output, token| {
+            let mut output = output?;
+
+            match token {
+                Token::Value(val) => output.push(val),
+                Token::Operator(op) => {
+                    let r = output.pop().ok_or("Erro!")?;
+                    let l = output.pop().ok_or("err")?;
+                    let result = match op {
+                        Op::Add => l + r,
+                        Op::Sub => l - r,
+                        Op::Mul => l * r,
+                        Op::Div => l / r,
+                        Op::Pow => l.powf(r),
+                    };
+                }
+
+                _ => return Err("Invalid Token in RPN".to_string())
+            }
+
+            Ok(output)
+        })?
+    ;
+
+    if result.len() == 1 {
+        Ok(result.pop().unwrap())
+    } else {
+        Err("Invalid Expression".to_string())
+    }
+}
+
 fn main() {
     let expr = "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3";
     let tokens = tokenize(expr);
     if let Ok(tokens) = &tokens {
-        println!("{:?}", tokens);
+        println!("Tokens: {:?}", tokens);
     }
 
     let rpn = shunting_yard(tokens.unwrap());
-    println!("{:?}", rpn);
+    println!("RPN: {:?}", rpn);
+
+    let result = evaluate(rpn);
+    println!("Resultado: {:?}", result);
 
 }
