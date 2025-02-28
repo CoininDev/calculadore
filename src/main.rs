@@ -1,3 +1,5 @@
+use std::io::{self, Write};
+
 #[derive(Debug)]
 enum Op {
     Add,
@@ -25,13 +27,10 @@ enum Token {
 
 fn tokenize(expr: &str) -> Result<Vec<Token>, String> {
     let mut num_buffer:String = String::new();
-    let a = expr
+    let mut tokens = expr
         .chars()
         .filter(|x| { x.to_string() != " " })
-        ;
-
-    println!("{:?}", a);
-    let mut tokens = a.fold(vec![], |mut acc, token| {
+        .fold(vec![], |mut acc, token| {
             match token {
                 '+' => {
                     check_reset_num_buffer(&mut num_buffer, &mut acc);
@@ -155,10 +154,42 @@ fn evaluate(rpn: Vec<Token>) -> Result<f64, String> {
 }
 
 fn main() {
-    let expr = "1+2 +(4-5)- (2/4)";
-    let tokens = tokenize(expr).unwrap();
-    println!("{:?}", tokens);
-    let rpn = shunting_yard(tokens);
-    let result = evaluate(rpn);
-    println!("{:?}", result);
+    println!("Type the mathematic expression (e.g.: 2+2) or \"exit\" to leave.");
+
+    loop {
+        print!("> ");
+        io::stdout().flush().unwrap(); 
+
+        let mut expr = String::new();
+        io::stdin()
+            .read_line(&mut expr)
+            .expect("Failed to read line.");
+
+        let expr = expr.trim(); 
+
+        if expr == "exit" {
+            println!("Exiting...");
+            break; 
+        }
+
+        let tokens = match tokenize(&expr) {
+            Ok(tokens) => tokens,
+            Err(e) => {
+                println!("Error: {}", e);
+                continue; 
+            }
+        };
+
+        let rpn = shunting_yard(tokens);
+        println!("Internal Tokens: {:?}", rpn);
+        let result = match evaluate(rpn) {
+            Ok(result) => result,
+            Err(e) => {
+                println!("Error: {}", e);
+                continue; 
+            }
+        };
+        
+        println!("Result: {:?}", result);
+    }
 }
