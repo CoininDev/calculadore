@@ -1,41 +1,41 @@
 # Calculadore
-Calculadore é uma calculadora escrita em Rust, desenvolvida a fins de aprendizado. 
-Ela usa Notação Polonesa Reversa para realizar as contas respeitando a ordem de operções e prioridades.
+Calculadore is a calculator written in Rust, developed for learning purposes.
+It uses Reverse Polish Notation to perform calculations respecting the order of operations and priorities.
 
-## Funcionalidades
+## Functionalities
 
-- **Operações Já Suportadas**: Adição **(+)**, Subtração **(-)**, Multiplicação **(*)**, Divisão **(/)** e Exponenciação **(^)**.
-- **Parênteses**: Suporte ao uso de parênteses para definir a ordem das operações.
+- **Operations Already Supported**: Addition **(+)**, Subtraction **(-)**, Multiplication **(*)**, Division **(/)** and Exponentiation **(^)**.
+- **Parentheses**: Support for the use of parentheses to define the order of operations.
 
-## Como Usar
+## How to Use
 
-1. **Clone o Repositório**:
+1. **Clone the Repository**: 
     ```bash
     git clone https://github.com/CoininDev/calculadore.git
     cd calculadore
     ```
 
-2. **Compile o Projeto**:
+2. **Compile the Project**: 
     ```bash
     cargo build
     ```
-    OBS: É preciso instalar [Rust](https://www.rust-lang.org/) para compilar o projeto.
+    NOTE: You need to install [Rust](https://www.rust-lang.org/) to compile the project.
 
-4. **Execute a Calculadora**:
+4. **Run the Calculator**: 
     ```bash
     cargo run
     ```
 
-5. **Digite uma Expressão Matemática**:
-    - Exemplos: `2+3*4`, `(1+2)^3`
-    - Para sair, digite `exit`.
+5. **Enter a Mathematical Expression**: 
+    - Examples: `2+3*4`, `(1+2)^3`
+    - To exit, type `exit`.
 
-## Estrutura do Código
+## Code Structure
 
-- **Tokenização**: A função `tokenize` converte uma string de expressão matemática em uma lista de tokens.
-- **Shunting Yard**: A função `shunting_yard` converte a lista de tokens para a notação polonesa reversa (RPN).
-- **Avaliação**: A função `evaluate` calcula o valor da expressão em RPN.
+- **Tokenization**: The `tokenize` function converts a string of mathematical expression into a list of tokens.
+- **Shunting Yard**: The `shunting_yard` function converts the list of tokens to reverse polish notation (RPN).
+- **Evaluation**: The `evaluate` function calculates the value of the expression in RPN.
 
-## Contribuição
+## Contribution
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
+Contributions are welcome! Feel free to open issues and pull requests.
